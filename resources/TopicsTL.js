@@ -1,26 +1,21 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TextInput, Button, Keyboard, Alert,FlatList,TouchableHighlight,ActivityIndicator,Imag,
-		StatusBar} from 'react-native';
-import {
-  BarIndicator,
-  DotIndicator,
-  MaterialIndicator,
-  PacmanIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator,
-  PulseIndicator
-} from 'react-native-indicators';
-import {List, ListItem, SearchBar} from 'react-native-elements';
+import {StyleSheet, Text, Button,View, TextInput, Keyboard, Alert,FlatList,TouchableHighlight,ActivityIndicator,
+	Image,StatusBar, TouchableOpacity} from 'react-native';
+import { BarIndicator } from 'react-native-indicators';
+import { ListItem, SearchBar} from 'react-native-elements';
+import SwipeUpDown from 'react-native-swipe-up-down';
+
 import firebase from './Firebase';
 import Timeline from './Timeline';
+import FlatListComponent from './FlatListComponent';
+
 
 export default class TopicsTL extends Component {
 
 	static navigationOptions = {
-    	title: 'Topic Flashes',
-    	headerStyle: { backgroundColor: '#3b5998', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
-    	headerTitleStyle: { color: '#F5F5F5' },
+    	title: 'Topics',
+    	headerStyle: {backgroundColor: '#3b5998', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
+    	headerTitleStyle: {color: '#F5F5F5',fontFamily: 'OpenSans-ExtraBold', fontSize:20,} ,
   	};
 
   	constructor(props) {
@@ -42,6 +37,7 @@ export default class TopicsTL extends Component {
 	}
 
 	componentDidMount() {
+
 		console.log('Checkign for tab change')
 		this._getDocumentData()
 		.then((docData) => {
@@ -55,16 +51,7 @@ export default class TopicsTL extends Component {
 
 	}
 
-	renderSeparator = () => {
-		return (
-      		<View style={{ height: 1, width: "78%", backgroundColor: "#CED0CE",marginLeft: "18%"}}
-      		/>
-    	);
-	}
-
-	renderFooter = () => {
-		return null
-	}
+	
 
 	render() {
 		console.log("Rendering data--->",this.state.dataMessages);
@@ -76,58 +63,19 @@ export default class TopicsTL extends Component {
 	        	<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
 	        	<SearchBar round placeholder="Search" lightTheme
 					//inputStyle={{backgroundColor: '#dfdfdf'}}
-					inputContainerStyle={{backgroundColor: '#D3D3D3'}}
-					containerStyle={{backgroundColor: '#F5F5F5', borderWidth: 0, borderRadius: 5,
-						elevation: 0, shadowOpacity: 0, borderBottomWidth:0,}}
+					inputContainerStyle={styles.searchBarInputContainerStyle}
+					containerStyle={styles.searchBarContainerStyle}
 					placeholderTextColor={'grey'}
 				 />
 	          	<BarIndicator count={5} size={50} color='#3b5998'/>
+
 	        </View>
 	      );
 	    }
 
 		return (
 			
-			<View style={styles.container}>
-    			<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
-				<SearchBar round placeholder="Search" lightTheme
-					//inputStyle={{backgroundColor: '#dfdfdf'}}
-					inputContainerStyle={{backgroundColor: '#D3D3D3'}}
-					containerStyle={{backgroundColor: '#F5F5F5', borderWidth: 0, borderRadius: 5,
-						borderBottomWidth:0}}
-					placeholderTextColor={'grey'}
-				 />
-				<FlatList data = {this.state.dataMessages} scrollEnabled={true}
-					renderItem = {
-						({item}) =>
-							
-
-							<TouchableHighlight onPress={() => { 
-									console.log('Pressed me -> ', item)
-									this.props.navigation.navigate('Timeline')
-								}}>
-								
-								
-										<ListItem roundAvatar large leftAvatar={{
-		                                    source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
-		                                    title: item.message[0]
-		                                    }}
-
-										title= {item.message} titleStyle={styles.listItemFullInputText} 
-										//subtitle={item.message}
-										containerStyle={{ borderBottomWidth: 0 , backgroundColor:'#F5F5F5'}}/>
-							
-									
-							</TouchableHighlight>
-							
-						
-					}
-					keyExtractor={(item, index) => index.toString()} 
-					ItemSeparatorComponent={this.renderSeparator}
-					ListFooterComponent={this.renderFooter}
-				/>
-				
-			</View>
+			<FlatListComponent dataMessages={this.state.dataMessages}/>
 			
 			
 		);
@@ -137,11 +85,36 @@ export default class TopicsTL extends Component {
 
 
 const styles = StyleSheet.create({
+
+	swipeUpDownTextStyle: {
+		position: 'absolute', bottom: 0 , textAlignVertical: 'center',fontWeight: 'bold',
+    	textAlign: 'center' , width:'95%', height: 25, fontSize: 18, backgroundColor:'#3b5998',
+    	marginLeft: '2.5%', marginRight: '2.5%', borderRadius:5, overflow:"hidden"
+	},
+	renderSeparatorStyle: {
+		height: 1, width: "100%", backgroundColor: "#CED0CE",marginLeft: "18%"
+	},
+	flatListContainerStyle: {
+		borderBottomWidth: 0 , backgroundColor:'#F5F5F5'
+	},
+	searchBarInputContainerStyle: {
+		backgroundColor: '#D3D3D3'
+	},
+	searchBarContainerStyle: {
+		backgroundColor: '#F5F5F5', borderWidth: 0, borderRadius: 5,
+						elevation: 0, shadowOpacity: 0, borderBottomWidth:0,
+	},
   container: {
     borderTopWidth: 0, borderBottomWidth: 0,borderBottomColor: 'red', flex:1,
     backgroundColor: '#F5F5F5'
   },
   listItemFullInputText: {
-  	color: 'black', fontFamily: 'AppleSDGothicNeo-Bold', fontSize:20
+  	color: 'black', fontFamily: 'OpenSans', fontSize:15
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5
   }
+
 });
