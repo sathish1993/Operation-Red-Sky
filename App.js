@@ -13,25 +13,50 @@ import Message from './resources/Message';
 import Timeline from './resources/Timeline';
 import TopicsTL from './resources/TopicsTL';
 import MessageInfo from './resources/MessageInfo';
-import {createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation';
+import BootScreen from './resources/BootScreen';
+import LoginPage from './resources/LoginPage';
+import SignUpPage from './resources/SignUpPage';
+import SplashPage from './resources/SplashPage';
+import {createBottomTabNavigator, createAppContainer, createStackNavigator,
+	createSwitchNavigator } from 'react-navigation';
 
+
+//check for login
+const MainNavigator = createStackNavigator({
+  
+  BootScreen: { screen: BootScreen },
+  LoginPage: { screen: LoginPage },
+  SignUpPage: { screen: SignUpPage },
+});
+//--- end of login check
+
+//---- for topic screen
+const TabNavigator = createBottomTabNavigator({
+  Timeline: {screen: Timeline},
+  Message: { screen: Message },
+});
 
 const TLNavigator = createStackNavigator({
   Topics: { screen: TopicsTL },
-  Timeline: { screen: Timeline },
+  Timeline: { screen: TabNavigator },
   MessageInfo: { screen: MessageInfo },
 } );
+//------ end here
 
-// const MainNavigator = createStackNavigator({
-//   Timeline: { screen: TLNavigator },
-//   MessageInfo: { screen: MessageInfo },
-// } );
+//---------------------------------- old logic
+const FinalNavigator = createSwitchNavigator({
+  Splash: SplashPage,
+	Auth: MainNavigator,
+	App: TLNavigator
+}, {
+	initialRouteName: 'Splash',
+});
 
 // const TabNavigator = createBottomTabNavigator({
 //   Home: {screen: MainNavigator},
 //   Message: { screen: Message },
 // });
 
-const App = createAppContainer(TLNavigator);
+const App = createAppContainer(FinalNavigator);
 
 export default App;

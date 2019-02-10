@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, Image,View, TextInput, TouchableHighlight} from 'react-native';
 import { Button } from 'react-native-elements';
+import LoginPage from './LoginPage';
+import SignUpPage from './SignUpPage';
 
 export default class BootScreen extends Component {
 
 	static navigationOptions = {
-    	headerStyle: {backgroundColor: '#FFF', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,}
+    	headerStyle: {backgroundColor: '#FFF', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
+    	headerLeft: null,
+    	swipeEnabled: false,
   	};
 
 	render() {
@@ -21,10 +25,16 @@ export default class BootScreen extends Component {
 				</View>	
 
 				<View style={styles.formContainer}>
-					<TouchableHighlight style={styles.buttonLoginContainer}>
+					<TouchableHighlight style={styles.buttonLoginContainer}
+						onPress={() => {
+								this.props.navigation.navigate('LoginPage')
+							}}>
 						<Text style={styles.buttonLoginText}> LOGIN </Text>
 					</TouchableHighlight>
-					<TouchableHighlight style={styles.buttonSignUpContainer}>
+					<TouchableHighlight style={styles.buttonSignUpContainer}
+						onPress={() => {
+								this.props.navigation.navigate('SignUpPage')
+							}}>
 						<Text style={styles.buttonSignUpText}> SIGN UP </Text>
 					</TouchableHighlight>
 					

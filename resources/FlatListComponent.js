@@ -9,7 +9,10 @@ import { ListItem, SearchBar} from 'react-native-elements';
 
 export default class FlatListComponent extends Component {
 
-	
+	constructor(props) {
+		super(props);
+		console.log(props);
+	}
 
 	renderSeparator = () => {
 		return (
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
 
 	swipeUpDownTextStyle: {
 		position: 'absolute', bottom: 0 , textAlignVertical: 'center',fontWeight: 'bold',
-    	textAlign: 'center' , width:'95%', height: 25, fontSize: 18, backgroundColor:'#3b5998',
+    	textAlign: 'center' , width:'95%', height: 35, fontSize: 18, backgroundColor:'#3b5998',
     	marginLeft: '2.5%', marginRight: '2.5%', borderRadius:5, overflow:"hidden"
 	},
 	renderSeparatorStyle: {

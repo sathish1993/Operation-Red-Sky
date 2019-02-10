@@ -5,6 +5,7 @@ import { BarIndicator } from 'react-native-indicators';
 import { ListItem, SearchBar} from 'react-native-elements';
 import SwipeUpDown from 'react-native-swipe-up-down';
 
+import firebase1 from 'react-native-firebase';
 import firebase from './Firebase';
 import Timeline from './Timeline';
 import FlatListComponent from './FlatListComponent';
@@ -16,6 +17,16 @@ export default class TopicsTL extends Component {
     	title: 'Topics',
     	headerStyle: {backgroundColor: '#3b5998', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
     	headerTitleStyle: {color: '#F5F5F5',fontFamily: 'OpenSans-ExtraBold', fontSize:20,} ,
+    	headerLeft: null,
+    	headerRight: (
+    		<Button
+        		onPress={() => {
+        			firebase1.auth().signOut()
+        		}}
+        		title="Sign Out"
+        		color="#F5F5F5"
+      		/>
+    	),
   	};
 
   	constructor(props) {
@@ -75,7 +86,7 @@ export default class TopicsTL extends Component {
 
 		return (
 			
-			<FlatListComponent dataMessages={this.state.dataMessages}/>
+			<FlatListComponent dataMessages={this.state.dataMessages} navigation={this.props.navigation}/>
 			
 			
 		);
