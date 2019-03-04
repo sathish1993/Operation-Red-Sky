@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import SwipeUpDown from 'react-native-swipe-up-down';
 
-import firebase from './Firebase';
 import Timeline from './Timeline';
 import {StyleSheet, Text, Button,View, TextInput, Keyboard, Alert,FlatList,TouchableHighlight,ActivityIndicator,
 	Image,StatusBar, TouchableOpacity} from 'react-native';
@@ -11,7 +10,6 @@ export default class FlatListComponent extends Component {
 
 	constructor(props) {
 		super(props);
-		console.log(props);
 	}
 
 	renderSeparator = () => {
@@ -22,71 +20,7 @@ export default class FlatListComponent extends Component {
 
 
 	render() {
-		return (
-			<View style={styles.container}>
-
-    			<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
-				<SearchBar round placeholder="Search" lightTheme
-					//inputStyle={{backgroundColor: '#dfdfdf'}}
-					inputContainerStyle={styles.searchBarInputContainerStyle}
-					containerStyle={styles.searchBarContainerStyle}
-					placeholderTextColor={'grey'}
-				 />
-				<FlatList contentContainerStyle= {{paddingBottom: 50}}
-					data = {this.props.dataMessages} scrollEnabled={true}
-					renderItem = {
-						({item}) =>
-							
-
-							<TouchableHighlight onPress={() => { 
-									console.log('Pressed me -> ', item)
-									this.props.navigation.navigate('Timeline')
-								}}>
-								
-								
-										<ListItem roundAvatar large leftAvatar={{
-		                                    source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
-		                                    title: item.message[0]
-		                                    }}
-
-										title= {item.message} titleStyle={styles.listItemFullInputText} 
-										//subtitle={item.message}
-										containerStyle={styles.flatListContainerStyle}/>
-							
-									
-							</TouchableHighlight>
-							
-						
-					}
-					keyExtractor={(item, index) => index.toString()} 
-					ItemSeparatorComponent={this.renderSeparator}
-					ListFooterComponent={this.renderFooter}
-				/>
-				
-					<Text style={styles.swipeUpDownTextStyle} onPress={() => this.swipeUpDownRef.showFull()}>
-	          			{' '}
-	          			
-	        		</Text>
-					<SwipeUpDown
-						hasRef={ref => (this.swipeUpDownRef = ref)}
-						// itemMini={
-						//   <Text style={styles.welcome}>Welcome to React Native!</Text>
-						// }
-						itemFull={
-							<Text style={styles.instructions}>
-							Welcome to component {'\n'} Swipe Up Down on React Native
-							</Text>
-						}
-						onShowMini={() => console.log('mini')}
-						onShowFull={() => console.log('full')}
-						disablePressToShow={false}
-						style={{ backgroundColor: 'yellow' }}
-						animation="easeInEaseOut"
-						swipeHeight={100}
-					/>
-				
-			</View>
-		);
+		return null;
 	}
 }
 
@@ -94,7 +28,7 @@ const styles = StyleSheet.create({
 
 	swipeUpDownTextStyle: {
 		position: 'absolute', bottom: 0 , textAlignVertical: 'center',fontWeight: 'bold',
-    	textAlign: 'center' , width:'95%', height: 35, fontSize: 18, backgroundColor:'#3b5998',
+    	textAlign: 'center' , width:'95%', height: 35, fontSize: 18, backgroundColor:'#8e12c6',
     	marginLeft: '2.5%', marginRight: '2.5%', borderRadius:5, overflow:"hidden"
 	},
 	renderSeparatorStyle: {

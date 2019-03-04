@@ -10,6 +10,8 @@ export default class BootScreen extends Component {
     	headerStyle: {backgroundColor: '#FFF', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
     	headerLeft: null,
     	swipeEnabled: false,
+		gesturesEnabled: false,
+		
   	};
 
 	render() {
@@ -47,7 +49,7 @@ export default class BootScreen extends Component {
 
 const styles = StyleSheet.create({
 	buttonLoginContainer: {
-		backgroundColor: '#3b5998',
+		backgroundColor: '#720e9e',
 		padding: 10,
 		alignItems: 'center',
 		width:'75%',
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
 	},
 
 	buttonSignUpContainer: {
-		backgroundColor: '#3b5998',
+		backgroundColor: '#720e9e',
 		padding: 10,
 		alignItems: 'center',
 		width:'75%',

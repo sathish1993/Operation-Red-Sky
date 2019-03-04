@@ -5,8 +5,8 @@ import { BarIndicator } from 'react-native-indicators';
 import { ListItem, SearchBar} from 'react-native-elements';
 import SwipeUpDown from 'react-native-swipe-up-down';
 
-import firebase1 from 'react-native-firebase';
-import firebase from './Firebase';
+import firebase from 'react-native-firebase';
+
 import Timeline from './Timeline';
 import FlatListComponent from './FlatListComponent';
 
@@ -15,13 +15,13 @@ export default class TopicsTL extends Component {
 
 	static navigationOptions = {
     	title: 'Topics',
-    	headerStyle: {backgroundColor: '#3b5998', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
+    	headerStyle: {backgroundColor: '#720e9e', elevation: 0, shadowOpacity: 0, borderBottomWidth: 0,},
     	headerTitleStyle: {color: '#F5F5F5',fontFamily: 'OpenSans-ExtraBold', fontSize:20,} ,
     	headerLeft: null,
     	headerRight: (
     		<Button
         		onPress={() => {
-        			firebase1.auth().signOut()
+        			firebase.auth().signOut()
         		}}
         		title="Sign Out"
         		color="#F5F5F5"
@@ -62,23 +62,27 @@ export default class TopicsTL extends Component {
 
 	}
 
-	
+	_renderData = () => {
+		return null;
+	}
 
 	render() {
-		console.log("Rendering data--->",this.state.dataMessages);
+		console.log("Rendering data--->",this.state.isReady);
 
 		if (!this.state.isReady) {
 	      //Loading View while data is loading
 	      	return (
 	        <View style={styles.container}>
 	        	<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
-	        	<SearchBar round placeholder="Search" lightTheme
-					//inputStyle={{backgroundColor: '#dfdfdf'}}
-					inputContainerStyle={styles.searchBarInputContainerStyle}
-					containerStyle={styles.searchBarContainerStyle}
-					placeholderTextColor={'grey'}
-				 />
-	          	<BarIndicator count={5} size={50} color='#3b5998'/>
+				{	        
+	    //     	<SearchBar round placeholder="Search" lightTheme
+					// //inputStyle={{backgroundColor: '#dfdfdf'}}
+					// inputContainerStyle={styles.searchBarInputContainerStyle}
+					// containerStyle={styles.searchBarContainerStyle}
+					// placeholderTextColor={'grey'}
+				 // /> 
+				}
+	          	<BarIndicator count={5} size={50} color='#720e9e'/>
 
 	        </View>
 	      );
@@ -86,8 +90,71 @@ export default class TopicsTL extends Component {
 
 		return (
 			
-			<FlatListComponent dataMessages={this.state.dataMessages} navigation={this.props.navigation}/>
 			
+			<View style = {styles.container}>
+			
+				<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
+					<SearchBar round placeholder="Search" lightTheme
+						//inputStyle={{backgroundColor: '#dfdfdf'}}
+						inputContainerStyle={styles.searchBarInputContainerStyle}
+						containerStyle={styles.searchBarContainerStyle}
+						placeholderTextColor={'grey'}
+					 />
+					<FlatList contentContainerStyle= {{paddingBottom: 50}}
+						data = {this.state.dataMessages} scrollEnabled={true}
+						renderItem = {
+							({item}) =>
+								
+
+								<TouchableHighlight onPress={() => { 
+										console.log('Pressed me -> ', item)
+										this.props.navigation.navigate('Timeline')
+									}}>
+									
+									
+								<ListItem roundAvatar large leftAvatar={{
+	                                source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
+	                                title: item.message[0]
+	                                }}
+
+								title= {item.message} titleStyle={styles.listItemFullInputText} 
+								//subtitle={item.message}
+								containerStyle={styles.flatListContainerStyle}/>
+								
+										
+								</TouchableHighlight>
+								
+							
+						}
+						keyExtractor={(item, index) => index.toString()} 
+						ItemSeparatorComponent={this.renderSeparator}
+						ListFooterComponent={this.renderFooter}
+					/>
+					
+						<Text style={styles.swipeUpDownTextStyle} onPress={() => this.swipeUpDownRef.showFull()}>
+		          			{' '}
+		          			
+		        		</Text>
+						<SwipeUpDown
+							hasRef={ref => (this.swipeUpDownRef = ref)}
+							// itemMini={
+							//   <Text style={styles.welcome}>Welcome to React Native!</Text>
+							// }
+							itemFull={
+								<Text style={styles.instructions}>
+								Welcome to component {'\n'} Swipe Up Down on React Native
+								</Text>
+							}
+							onShowMini={() => console.log('mini')}
+							onShowFull={() => console.log('full')}
+							disablePressToShow={false}
+							style={{ backgroundColor: 'yellow' }}
+							animation="easeInEaseOut"
+							swipeHeight={100}
+						/>
+	    			
+					
+			</View>
 			
 		);
 		
@@ -99,7 +166,7 @@ const styles = StyleSheet.create({
 
 	swipeUpDownTextStyle: {
 		position: 'absolute', bottom: 0 , textAlignVertical: 'center',fontWeight: 'bold',
-    	textAlign: 'center' , width:'95%', height: 25, fontSize: 18, backgroundColor:'#3b5998',
+    	textAlign: 'center' , width:'95%', height: 25, fontSize: 18, backgroundColor:'#8e12c6',
     	marginLeft: '2.5%', marginRight: '2.5%', borderRadius:5, overflow:"hidden"
 	},
 	renderSeparatorStyle: {

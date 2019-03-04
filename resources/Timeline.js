@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TextInput, Button, Keyboard, Alert,FlatList,TouchableHighlight,ScrollView,Image} from 'react-native';
-// import {createStackNavigator} from 'react-navigation';
-import {List, ListItem, Avatar} from 'react-native-elements';
-import firebase from './Firebase';
+import {StyleSheet, Text, View, TextInput, Button, Keyboard, Alert,FlatList,
+		TouchableHighlight,ScrollView,Image, StatusBar} from 'react-native';
+import { BarIndicator } from 'react-native-indicators';
+import {ListItem} from 'react-native-elements';
+import firebase from 'react-native-firebase';
 import MessageInfo from './MessageInfo';
 
 export default class Timeline extends Component {
 
 	static navigationOptions = {
     	title: 'Timeline',
-    	headerStyle: { elevation: 0, shadowOpacity: 0, borderBottomWidth:0,},
+    	headerTintColor: 'white',	
+    	headerStyle: { backgroundColor: '#720e9e', elevation: 0, shadowOpacity: 0, borderBottomWidth:0,},
+    	headerTitleStyle: {color: '#F5F5F5',fontFamily: 'OpenSans', fontSize:20,} ,
   	};
 
 	constructor(props) {
@@ -17,6 +20,7 @@ export default class Timeline extends Component {
 		this.ref = firebase.firestore().collection('messages');
 		this.state = {
 			dataMessages: [],
+			isReady: false
 		}
 		this._getDocumentData = this._getDocumentData.bind(this);
 	}
@@ -33,7 +37,7 @@ export default class Timeline extends Component {
 		this._getDocumentData()
 		.then((docData) => {
 			//temp = docData.map(docData => docData.message)
-			this.setState({dataMessages: docData})
+			this.setState({isReady:true, dataMessages: docData})
 		})
 		.catch((error) => {
 			console.log(error)
@@ -42,16 +46,29 @@ export default class Timeline extends Component {
 
 	renderSeparator = () => {
 		return (
-      		<View style={{ height: 1, width: "100%", backgroundColor: "#CED0CE",marginLeft: "0%"}}
+      		<View style={styles.renderSeparatorStyle}
       		/>
     	);
 	}
 
 	render() {
 		console.log("Rendering data--->",this.state.dataMessages);
+		
+		if (!this.state.isReady) {
+			return(
+				<View style={styles.container}>
+		        	
+		        	<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
+		          	<BarIndicator count={5} size={50} color='#720e9e'/>
+
+		        </View>
+	      );
+		      
+	    }
+
 		return (
-			
 			<View style={styles.container}>
+			<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
 				<FlatList data = {this.state.dataMessages} scrollEnabled={true}
 					renderItem = {
 						({item}) =>
@@ -59,7 +76,10 @@ export default class Timeline extends Component {
 									console.log('Pressed me -> ', item)
 									this.props.navigation.navigate('MessageInfo',{payload: item})
 								}}>
-								<ListItem
+								<ListItem roundAvatar large leftAvatar={{
+                                		source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
+                                		title: item.message[0]
+                                	}}
 
 								title= {item.message} titleStyle={styles.listItemFullInputText} 
 								//subtitle={item.message}
@@ -78,10 +98,13 @@ export default class Timeline extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    borderTopWidth: 0, borderBottomWidth: 0,borderBottomColor: 'red', flex:1
+    borderTopWidth: 0, borderBottomWidth: 0,borderBottomColor: 'red', flex:1, backgroundColor: '#F5F5F5'
+  },
+  renderSeparatorStyle: {
+		height: 1, width: "100%", backgroundColor: "#CED0CE",marginLeft: "18%"
   },
   listItemFullInputText: {
-  	color: 'black', fontFamily: 'AppleSDGothicNeo-Bold', fontSize:20
+  	color: 'black', fontFamily: 'OpenSans', fontSize:15
   }
 });
 

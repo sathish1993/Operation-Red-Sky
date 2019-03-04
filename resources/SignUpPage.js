@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
 	},
 
 	buttonLoginContainer: {
-		backgroundColor: '#3b5998',
+		backgroundColor: '#720e9e',
 		padding: 10,
 		alignItems: 'center',
 		width:'75%',

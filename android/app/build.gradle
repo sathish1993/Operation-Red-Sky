@@ -134,6 +134,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
+    implementation project(':react-native-youtube')
+    implementation project(':react-native-video')
     implementation project(':react-native-firebase')
     implementation project(':react-native-bottom-action-sheet')
     implementation project(':react-native-vector-icons')

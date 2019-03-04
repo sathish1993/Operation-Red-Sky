@@ -3,6 +3,9 @@ package com.navigations;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
+import com.brentvatne.react.ReactVideoPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import ui.bottomactionsheet.RNBottomActionSheetPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -28,6 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCWebViewPackage(),
+            new ReactNativeYouTube(),
+            new ReactVideoPackage(),
             new RNFirebasePackage(),
             new RNBottomActionSheetPackage(),
             new VectorIconsPackage(),
