@@ -7,14 +7,26 @@ export default class MessageInfoWebView extends Component {
 
 	constructor(props) {
 		super(props);
+		this._getTitle = this._getTitle.bind(this);
 	}
 
-	static navigationOptions = {
-		
+	static navigationOptions = ({navigation}) => ({
+		title: navigation.state.params.url,
 		headerVisible: false,
     	headerTintColor: 'white',
 		headerStyle: { backgroundColor: '#720e9e', elevation: 0, shadowOpacity: 0, borderBottomWidth:0,}
-  	};
+  	});
+
+	_getTitle(url) {
+		var paths = url.split('/')
+		for(index in paths) {
+			var word = paths[index]
+			if(word.includes('.com')) {
+				return word.substring((word.indexOf('.'))+1);
+			}
+		}
+		return 'Message View';
+	}
 
   	_renderLoadingView() {
   		return (
@@ -25,7 +37,7 @@ export default class MessageInfoWebView extends Component {
 	render() {
 		const {params} = this.props.navigation.state;
 		let redirectURL  = params.url;
-		console.log(redirectURL)
+		
 		return (
 			<View style = {{ flex: 1}}>
 				<WebView
