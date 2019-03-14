@@ -34,9 +34,8 @@ export default class MessageInfo extends Component {
 	// static navigationOptions = ({navigation}) => ({
  //    	title: MessageInfo,
  //  	});
- 	_getPreview = () => {
- 		
- 		LinkPreview.getPreview('https://www.yahoo.com/news/trevor-noah-talks-jussie-smollett-170151784.html')
+ 	_getPreview = (sourceURL) => { 
+ 		LinkPreview.getPreview(sourceURL)
  		//LinkPreview.getPreview('https://www.youtube.com/watch?v=ruaAUbekM9Q')
     	.then(data => { console.log(data)
     			this.setState({
@@ -52,7 +51,6 @@ export default class MessageInfo extends Component {
  		let url = this.state.previewData.url;
  		let youTubeCheck = 'youtube.com'
  		if(url.includes(youTubeCheck)){
-
  			console.log(url);
  			this.setState({youTubeVideo: true});
  			
@@ -101,13 +99,13 @@ export default class MessageInfo extends Component {
 
 	render() {
 		const {params} = this.props.navigation.state;
-		//console.log('My photo--->', params.payload.photo.uri)
-		console.log('previewData-->', this.state.previewData)
+		console.log('My photo--->', params.payload.message.url)
+		//console.log('previewData-->', this.state.previewData)
 		if(!this.state.gotData) {
 			return (
 				<View style={styles.container}>
 					<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>					
-					{this._getPreview()}
+					{this._getPreview(params.payload.message.url)}
 					<BarIndicator count={5} size={50} color='#720e9e'/>
 				</View>
 			)
