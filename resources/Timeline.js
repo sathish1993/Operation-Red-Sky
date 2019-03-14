@@ -17,7 +17,7 @@ export default class Timeline extends Component {
 
 	constructor(props) {
 		super(props);
-		this.ref = firebase.firestore().collection('messages');
+		this.ref = firebase.firestore().collection('messages_check');
 		this.state = {
 			dataMessages: [],
 			isReady: false
@@ -25,17 +25,22 @@ export default class Timeline extends Component {
 		this._getDocumentData = this._getDocumentData.bind(this);
 	}
 
-	async _getDocumentData () {
-		const snapshot = await this.ref.get()
-		const docData = snapshot.docs.map(doc => doc.data());
+	async _getDocumentData(topic) {
+		
+		const snapshot = await this.ref.where('topic', '==', topic.ref).get()
+		const docData = snapshot.docs.map(doc => {
+			return doc.data();
+		});
 		return docData
 		
 	}
 
 	componentDidMount() {
-		console.log('Checkign for tab change')
-		this._getDocumentData()
+		const {params} = this.props.navigation.state;
+		console.log('topicName i clicked --> ', params)
+		this._getDocumentData(params.topic)
 		.then((docData) => {
+			console.log(docData)
 			//temp = docData.map(docData => docData.message)
 			this.setState({isReady:true, dataMessages: docData})
 		})
@@ -52,6 +57,7 @@ export default class Timeline extends Component {
 	}
 
 	render() {
+
 		console.log("Rendering data--->",this.state.dataMessages);
 		
 		if (!this.state.isReady) {
@@ -73,16 +79,16 @@ export default class Timeline extends Component {
 					renderItem = {
 						({item}) =>
 							<TouchableHighlight onPress={() => { 
-									console.log('Pressed me -> ', item)
+									console.log('Pressed me in Message Timeline-> ', item)
 									this.props.navigation.navigate('MessageInfo',{payload: item})
 								}}>
 								<ListItem roundAvatar large leftAvatar={{
-                                		source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
+                                		source: { uri: item.message.urlToImage },
                                 		title: item.message[0]
                                 	}}
 
-								title= {item.message} titleStyle={styles.listItemFullInputText} 
-								//subtitle={item.message}
+								title= {item.message.title} titleStyle={styles.listItemFullInputText} 
+								//subtitle={item.message.url}
 									containerStyle={{ borderBottomWidth: 0 }}/>
 							</TouchableHighlight>
 					}
