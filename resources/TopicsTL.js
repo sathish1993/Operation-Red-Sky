@@ -30,31 +30,31 @@ export default class TopicsTL extends Component {
   	};
 
   	constructor(props) {
-		super(props);
-		this.ref = firebase.firestore().collection('messages');
-		this.state = {
-			dataMessages: [],
-			isReady: false
-		}
-		this._getDocumentData = this._getDocumentData.bind(this);
+			super(props);
+			this.ref = firebase.firestore().collection('topics_check');
+			this.state = {
+				dataMessages: [],
+				isReady: false,
+				searchQuery: '',
+				searchQueryMessages: [],
+			}
+			this._getDocumentData = this._getDocumentData.bind(this);
 	}
 
 
 	async _getDocumentData () {
-		const snapshot = await this.ref.get()
-		const docData = snapshot.docs.map(doc => doc.data());
-		return docData
-		
+			const snapshot = await this.ref.get()
+			const docData = snapshot.docs.map(doc => doc);
+			return docData
 	}
 
 	componentDidMount() {
-
 		console.log('Checkign for tab change')
-		this._getDocumentData()
+		this._getDocumentData('')
 		.then((docData) => {
 			//temp = docData.map(docData => docData.message)
-
 			this.setState({isReady:true, dataMessages: docData})
+
 		})
 		.catch((error) => {
 			console.log(error)
@@ -66,8 +66,29 @@ export default class TopicsTL extends Component {
 		return null;
 	}
 
+	renderSeparator = () => {
+		return (
+      		<View style={styles.renderSeparatorStyle}
+      		/>
+    	);
+	}
+
+	_updateSearch = (searchQuery) => {
+		let searchQueryMessages = [];
+		if(searchQuery != '') {
+			this.state.dataMessages.map(dataMessage => {
+				if(dataMessage._data.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+					searchQueryMessages.push(dataMessage);
+				}
+			})
+		}
+		
+		this.setState({searchQuery, searchQueryMessages});
+	}
+
 	render() {
-		console.log("Rendering data--->",this.state.isReady);
+		console.log("Rendering data--->",this.state.dataMessages, "~~~", 
+		this.state.searchQueryMessages );
 
 		if (!this.state.isReady) {
 	      //Loading View while data is loading
@@ -86,7 +107,76 @@ export default class TopicsTL extends Component {
 
 	        </View>
 	      );
-	    }
+		}
+		
+		if(this.state.searchQueryMessages.length != 0) {
+			return(
+				<View style = {styles.container}>
+			
+				<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
+					<SearchBar round placeholder="Search" lightTheme
+						inputStyle={{color: 'black'}}
+						inputContainerStyle={styles.searchBarInputContainerStyle}
+						containerStyle={styles.searchBarContainerStyle}
+						placeholderTextColor={'grey'}
+						onChangeText={this._updateSearch}
+						value={this.state.searchQuery}
+					 />
+					<FlatList contentContainerStyle= {{paddingBottom: 50}}
+						data = {this.state.searchQueryMessages} scrollEnabled={true}
+						renderItem = {
+							({item: curTopic}) => 
+
+								<TouchableHighlight onPress={() => { 
+										//console.log('Pressed me -> ', item)
+										this.props.navigation.navigate('Timeline', {topic: curTopic})
+									}}>
+									
+									
+									<ListItem roundAvatar large leftAvatar={{
+		                                //source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
+		                                title: curTopic._data.title[0]
+		                                }}
+
+									title= {curTopic._data.title} titleStyle={styles.listItemFullInputText} 
+									//subtitle={item.message}
+									containerStyle={styles.flatListContainerStyle}/>
+								
+								</TouchableHighlight>
+								
+							
+						}
+						keyExtractor={(item, index) => index.toString()} 
+						ItemSeparatorComponent={this.renderSeparator}
+						ListFooterComponent={this.renderFooter}
+					/>
+					
+						<Text style={styles.swipeUpDownTextStyle} onPress={() => this.swipeUpDownRef.showFull()}>
+		          			{' '}
+		          			
+		        		</Text>
+						<SwipeUpDown
+							hasRef={ref => (this.swipeUpDownRef = ref)}
+							// itemMini={
+							//   <Text style={styles.welcome}>Welcome to React Native!</Text>
+							// }
+							itemFull={
+								<Text style={styles.instructions}>
+								Welcome to component {'\n'} Swipe Up Down on React Native
+								</Text>
+							}
+							onShowMini={() => console.log('mini')}
+							onShowFull={() => console.log('full')}
+							disablePressToShow={false}
+							style={{ backgroundColor: 'yellow' }}
+							animation="easeInEaseOut"
+							swipeHeight={100}
+						/>
+	    			
+					
+			</View>
+			);
+		}
 
 		return (
 			
@@ -95,33 +185,33 @@ export default class TopicsTL extends Component {
 			
 				<StatusBar backgroundColor="blue" barStyle="light-content" hidden={false}/>
 					<SearchBar round placeholder="Search" lightTheme
-						//inputStyle={{backgroundColor: '#dfdfdf'}}
+						inputStyle={{color: 'black'}}
 						inputContainerStyle={styles.searchBarInputContainerStyle}
 						containerStyle={styles.searchBarContainerStyle}
 						placeholderTextColor={'grey'}
+						onChangeText={this._updateSearch}
+						value={this.state.searchQuery}
 					 />
 					<FlatList contentContainerStyle= {{paddingBottom: 50}}
 						data = {this.state.dataMessages} scrollEnabled={true}
 						renderItem = {
-							({item}) =>
-								
+							({item: curTopic}) => 
 
 								<TouchableHighlight onPress={() => { 
-										console.log('Pressed me -> ', item)
-										this.props.navigation.navigate('Timeline')
+										//console.log('Pressed me -> ', item)
+										this.props.navigation.navigate('Timeline', {topic: curTopic})
 									}}>
 									
 									
-								<ListItem roundAvatar large leftAvatar={{
-	                                source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
-	                                title: item.message[0]
-	                                }}
+									<ListItem roundAvatar large leftAvatar={{
+		                                //source: { uri: 'data:image/jpeg;base64,' + item.photo.data },
+		                                title: curTopic._data.title[0]
+		                                }}
 
-								title= {item.message} titleStyle={styles.listItemFullInputText} 
-								//subtitle={item.message}
-								containerStyle={styles.flatListContainerStyle}/>
+									title= {curTopic._data.title} titleStyle={styles.listItemFullInputText} 
+									//subtitle={item.message}
+									containerStyle={styles.flatListContainerStyle}/>
 								
-										
 								</TouchableHighlight>
 								
 							
@@ -173,7 +263,7 @@ const styles = StyleSheet.create({
 		height: 1, width: "100%", backgroundColor: "#CED0CE",marginLeft: "18%"
 	},
 	flatListContainerStyle: {
-		borderBottomWidth: 0 , backgroundColor:'#F5F5F5'
+		borderBottomWidth: 0 , backgroundColor:'#F5F5F5',
 	},
 	searchBarInputContainerStyle: {
 		backgroundColor: '#D3D3D3'
