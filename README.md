@@ -2,7 +2,8 @@
 
 # Screenshot
 
-![Simulator Screen Shot - iPhone X - 2019-04-24 at 20 44 24](https://user-images.githubusercontent.com/23174000/56704182-cd4bb680-66d1-11e9-8d89-f6e53339b478.png = 250x250)
+<img src="https://user-images.githubusercontent.com/23174000/56704182-cd4bb680-66d1-11e9-8d89-f6e53339b478.png" width="100" height="100">
+
 
 ![Simulator Screen Shot - iPhone X - 2019-04-24 at 20 44 31](https://user-images.githubusercontent.com/23174000/56704187-cfae1080-66d1-11e9-898e-75959aa61ebf.png = 250x250)
 
