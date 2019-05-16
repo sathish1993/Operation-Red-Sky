@@ -9,15 +9,15 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput, Button, Keyboard, Alert} from 'react-native';
-//import Message from './resources/Message';
-import Timeline from './resources/Timeline';
-import TopicsTL from './resources/TopicsTL';
-import MessageInfo from './resources/MessageInfo';
-import BootScreen from './resources/BootScreen';
-import LoginPage from './resources/LoginPage';
-import SignUpPage from './resources/SignUpPage';
-import SplashPage from './resources/SplashPage';
-import MessageInfoWebView from './resources/MessageInfoWebView';
+//import Message from './resources/screens/Message';
+import Timeline from './resources/screens/Timeline';
+import TopicsTL from './resources/screens/TopicsTL';
+import MessageInfo from './resources/screens/MessageInfo';
+import BootScreen from './resources/screens/BootScreen';
+import LoginPage from './resources/screens/LoginPage';
+import SignUpPage from './resources/screens/SignUpPage';
+import SplashPage from './resources/screens/SplashPage';
+import MessageInfoWebView from './resources/screens/MessageInfoWebView';
 import {createBottomTabNavigator, createAppContainer, createStackNavigator,
 	createSwitchNavigator } from 'react-navigation';
 

@@ -8,9 +8,15 @@ def _insertData(firedb, top_headlines):
 	topics_ref = firedb.collection(u'topics_check')
 
 	headlines_topic = topics_ref.document(u'Headlines')
+	headlines_doc = headlines_topic.get()
+	headlines_doc_dict = headlines_doc.to_dict()
+	message_data_doc_ref_arr = []
 
+	if headlines_doc_dict != None:
+		message_data_doc_ref_arr = headlines_doc_dict['valid_messages']
+	
 	if top_headlines['status'] == 'ok':
-		message_data_doc_ref_arr = []
+		
 		for news in top_headlines['articles']:
 			doc_ref = messages_ref.document()
 
@@ -20,13 +26,12 @@ def _insertData(firedb, top_headlines):
 				'message': news,
 			}
 
-			doc_ref.set(message_data)
-			
+			doc_ref.set(message_data)			
 			message_data_doc_ref_arr.append(doc_ref)
 
 		topic_data = {
 			'title': u'Headlines',
-			'valid_messages': message_data_doc_ref_arr,
+			'valid_messages': message_data_doc_ref_arr[::-1],
 		}
 		headlines_topic.set(topic_data)
 

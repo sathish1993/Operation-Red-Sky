@@ -21,6 +21,7 @@
     "react-native-link-preview": "^1.4.1",
     "react-native-prompt-crossplatform": "^1.6.1",
     "react-native-recaptcha-v3": "0.0.16",
+    "react-native-snap-carousel": "^3.7.5",
     "react-native-swipe-up-down": "^1.0.7",
     "react-native-vector-icons": "^6.2.0",
     "react-native-video": "^4.4.0",
